@@ -49,46 +49,7 @@ function reset_ul(ul) {
       ul.removeChild(ul.firstChild);
   }
 }
-///////////////////////////////////////////////////////////////////////////////////
 
-//Displays information on a singe project
-//////////////////////////////////////////////////////////////////////////////////
-// var single_project = function() {
-//   var req = new XMLHttpRequest();
-//
-//   req.open("get", this.href);
-//
-//   req.addEventListener("load", function() {
-//     document.getElementById("title").innerHTML = req.response.name;
-//     document.getElementById("description").innerHTML = req.response.description;
-//
-//     var ul = document.getElementById("links");
-//     reset_ul(ul);
-//     for (var i = 0; i < req.response.links.length; i++) {
-//       var li = document.createElement("li");
-//       var a = document.createElement("a");
-//       a.setAttribute("href", req.response.links[i].link);
-//       a.appendChild(document.createTextNode(req.response.links[i].link));
-//       li.appendChild(a);
-//       ul.appendChild(li);
-//     }
-//
-//     var ul = document.getElementById("co-workers");
-//     reset_ul(ul);
-//     for (var i = 0; i < req.response.members.length; i++) {
-//       var li = document.createElement("li");
-//       li.appendChild(document.createTextNode("Co-Worker: " + req.response.members[i].name));
-//       ul.appendChild(li);
-//     }
-//
-//   })
-//   event.preventDefault();
-//   req.responseType = "json";
-//   req.send();
-//
-// }
-//
-// ////////////////////////////////////////////////////////////////////////////////
 //
 // //Display all links in the database
 // ////////////////////////////////////////////////////////////////////////////////
@@ -116,89 +77,72 @@ function reset_ul(ul) {
 // //////////////////////////////////////////////////////////////////////////
 //
 //
-// //Displays all members
-// //////////////////////////////////////////////////////////////////////////
-// var all_members = function() {
-//   var req = new XMLHttpRequest();
+
+
+//Deletes a photographer
+//////////////////////////////////////////////////////////////////////////
+var delete_photographer = function() {
+  var req = new XMLHttpRequest();
+  var id = document.getElementById("delete_id").value.charAt(0);
+
+  req.open("get", "/photographers/delete/" + id);
+
+  req.addEventListener("load", function() {
+    document.getElementById("delete_text").innerHTML = (req.response.name + " DELETED");
+  })
+
+  list_photographers();
+
+  req.responseType = "json";
+  req.send();
+
+}
+
+//Adds a project
+////////////////////////////////////////////////////////////////////////
+var add_photographer = function() {
+  var req = new XMLHttpRequest();
+  var name = document.getElementById("photographer_name").value;
+
+  var string = "/photographers/add?name=" + name;
+  req.open("get", string);
+
+  req.addEventListener("load", function() {
+    document.getElementById("added_text").innerHTML = (req.response.name + " ADDED");
+    add_list_item_to_projects(req.response.id, req.response.name);
+    add_item_to_select(req.response.id, req.response.name);
+    document.getElementById("photographer_name").value = "";
+  })
+
+  req.responseType = "json";
+  req.send();
+}
+
+//Updates a photographers name
+////////////////////////////////////////////////////////////////////////
+var update_photographer = function() {
+  var req = new XMLHttpRequest();
+  var name = document.getElementById("update_photographer_name").value;
+  var id = document.getElementById("delete_id").value.charAt(0);
+
+  var string = "/photographers/update?name=" + name + "&id=" +id;
+  req.open("get", string);
+
+  req.addEventListener("load", function() {
+    document.getElementById("update_text").innerHTML = (req.response.name + " ADDED");
+    list_photographers();
+    document.getElementById("photographer_name").value = "";
+  })
+
+  req.responseType = "json";
+  req.send();
+}
 //
-//   req.open("get", "http://localhost:4567/members");
-//
-//   req.addEventListener("load", function() {
-//     var ul = document.getElementById("members_all");
-//     for (var i = 0; i < req.response.length; i++) {
-//       var li = document.createElement("li");
-//       li.appendChild(document.createTextNode("Co-Worker: " + req.response[i].name));
-//       ul.appendChild(li);
-//     }
-//   })
-//
-//   req.responseType = "json";
-//   req.send();
-// }
-// ///////////////////////////////////////////////////////////////////////////
-//
-// //Deletes a project
-// //////////////////////////////////////////////////////////////////////////
-// var delete_project = function() {
-//   var req = new XMLHttpRequest();
-//   var id = document.getElementById("delete_id").value.charAt(0);
-//   var links = [];
-//   var members = [];
-//
-//   req.open("get", "http://localhost:4567/projects/delete/" + id);
-//
-//   req.addEventListener("load", function() {
-//     document.getElementById("delete_text").innerHTML = (req.response.name + " DELETED");
-//   })
-//
-//   list_projects();
-//
-//   req.responseType = "json";
-//   req.send();
-//
-// }
-// /////////////////////////////////////////////////////////////////////////
-//
-// //Adds a project
-// ////////////////////////////////////////////////////////////////////////
-// var add_project = function() {
-//   var req = new XMLHttpRequest();
-//   var name = document.getElementById("project_name").value;
-//   var description = document.getElementById("project_description").value;
-//   var link1 = document.getElementById("project_link1").value;
-//   var link2 = document.getElementById("project_link2").value;
-//   var link3 = document.getElementById("project_link3").value;
-//   var member1 = document.getElementById("project_member1").value;
-//   var member2 = document.getElementById("project_member2").value;
-//
-//   var string = "http://localhost:4567/projects/add?name=" + name + "&description=" + description + "&link1=" + link1 +
-//   "&link2=" + link2 + "&link3=" + link3 + "&member1=" + member1 + "&member2=" + member2
-//   req.open("get", string);
-//
-//   req.addEventListener("load", function() {
-//     document.getElementById("added_text").innerHTML = (req.response.name + " ADDED");
-//     add_list_item_to_projects(req.response.id, req.response.name);
-//     add_item_to_select(req.response.id, req.response.name);
-//     document.getElementById("project_name").value = "";
-//     document.getElementById("project_description").value = "";
-//     document.getElementById("project_link1").value = "";
-//     document.getElementById("project_link2").value = "";
-//     document.getElementById("project_link3").value = "";
-//     document.getElementById("project_member1").value = "";
-//     document.getElementById("project_member2").value = "";
-//   })
-//
-//   req.responseType = "json";
-//   req.send();
-// }
-// /////////////////////////////////////////////////////////////////////
-//
-// //Sets event actions
-// /////////////////////////////////////////////////////////////////////
-// window.onload = function() {
-//   $("#all_links").on("click", all_links);
-//   document.getElementById("all_members").addEventListener("click", all_members);
-//   document.getElementById("delete_project").addEventListener("click", delete_project);
-//   document.getElementById("add_project").addEventListener("click", add_project);
-// }
-// //////////////////////////////////////////////////////////////////////
+//Sets event actions
+/////////////////////////////////////////////////////////////////////
+window.onload = function() {
+  document.getElementById("delete").addEventListener("click", delete_photographer);
+  document.getElementById("add").addEventListener("click", add_photographer);
+  document.getElementById("update").addEventListener("click", update_photographer);
+}
+//////////////////////////////////////////////////////////////////////

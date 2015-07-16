@@ -9,15 +9,21 @@ get "/photographers/all" do
 end  
 
 get "/photographers/add" do
-  json
+  photographer = Photographer.new({"name" => params["name"]})
+  photographer.save
+  json photographer
 end
 
-get "/photographers/delete" do
-  json
+get "/photographers/delete/:id" do
+  photographer = Photographer.find(params["id"])
+  photographer.delete
+  json photographer
 end
 
 get "/photographers/update" do
-  json
+  photographer = Photographer.find(params["id"])
+  photographer.update_attribute("name", params["name"])
+  json photographer
 end
 
 get "/photographers/:id/photos" do
