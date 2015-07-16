@@ -1,8 +1,11 @@
 get "/photographers" do
+  erb :"photographers/photographers"
 end
 
 get "/photographers/all" do
-  json
+  photographers = Photographer.all
+  
+  json photographers
 end  
 
 get "/photographers/add" do

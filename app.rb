@@ -2,16 +2,25 @@ require "pry"
 require "active_record"
 require "sinatra"
 require "sinatra/reloader"
+require "sinatra/json"
 require "sqlite3"
 
 ActiveRecord::Base.establish_connection(adapter: "sqlite3", database: "photo_storage.db")
 
 ActiveRecord::Base.logger = ActiveSupport::Logger.new(STDOUT)
 
-require_relative "photographer"
-require_relative "photo"
-require_relative "album"
+# Models
+require_relative "models/photographer"
+require_relative "models/photo"
+require_relative "models/album"
 
+# Controllers
+require_relative "controllers/main"
+require_relative "controllers/albums"
+require_relative "controllers/photographers"
+require_relative "controllers/photos"
+
+# Database setup
 unless ActiveRecord::Base.connection.table_exists?(:photographers)
   ActiveRecord::Base.connection.create_table :photographers do |t|
     t.text :name

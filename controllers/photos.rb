@@ -13,5 +13,5 @@ end
 get "/photos/update" do
 end
 
-get "/photos/:id/photos"
+get "/photos/:id/photos" do
 end

@@ -4,7 +4,7 @@ var req = new XMLHttpRequest();
 
 req.open("get", "/photographers/all");
 
-req.addEventListener("load", list_photopgrahers);
+req.addEventListener("load", list_photographers);
 
 req.responseType = "json";
 req.send();
@@ -15,7 +15,9 @@ function list_photographers() {
   var select_delete = document.getElementById("delete_id");
   var select_update = document.getElementById("update_id");
   var select_photo = document.getElementById("photo_id");
-  reset_select(select);
+  reset_select(select_delete);
+  reset_select(select_update);
+  reset_select(select_photo);
   for (var i = 0; i < req.response.length; i++) {
     add_photographer_to_list(ul, req.response[i].id, req.response[i].name);
     add_photographer_to_select(select_delete, req.response[i].id, req.response[i].name);
@@ -26,11 +28,11 @@ function list_photographers() {
 
 function add_photographer_to_list(ul, id, name) {
   var li = document.createElement("li");
-  li.innerHTML = "ID: " + id + " - Name: " + name;
+  li.innerHTML = id + " - " + name;
   ul.appendChild(li);
 }
 
-function add_item_to_select(select, id, name) {
+function add_photographer_to_select(select, id, name) {
   var option = document.createElement("option");
   option.innerHTML = id + "-" + name;
   select.appendChild(option);
