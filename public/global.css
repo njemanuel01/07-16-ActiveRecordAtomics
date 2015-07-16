@@ -93,6 +93,7 @@ body {
   #column1 {
     float: left;
     width: 33%;
+    height: 100vh;
     padding: 10px;
     border-right: 2px solid;
   }
@@ -100,6 +101,7 @@ body {
   #column2 {
     float: left;
     width: 33%;
+    height: 100vh;
     padding: 10px;
     border-right: 2px solid;
   }
@@ -107,6 +109,7 @@ body {
   #column3 {
     float: left;
     width: 33%;
+    height: 100%;
     padding: 10px;
   }
   
