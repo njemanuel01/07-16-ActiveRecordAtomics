@@ -21,6 +21,7 @@ end
 unless ActiveRecord::Base.connection.table_exists?(:photos)
   ActiveRecord::Base.connection.create_table :photos do |t|
     t.text :name
+    t.text :url
     t.integer :photographer_id
   end  
 end
