@@ -16,8 +16,8 @@ end
 
 get "/albums/delete/:id" do
   album = Album.find(params["id"])
-  photographer.delete
-  json photographer
+  album.delete
+  json album
 end
 
 get "/albums/update" do

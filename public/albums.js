@@ -132,7 +132,7 @@ var add_album = function() {
 var update_album = function() {
   var req = new XMLHttpRequest();
   var name = document.getElementById("update_album_name").value;
-  var id = document.getElementById("delete_id").value.charAt(0);
+  var id = document.getElementById("update_id").value.charAt(0);
 
   var string = "/albums/update?name=" + name + "&id=" +id;
   req.open("get", string);
@@ -151,9 +151,9 @@ var update_album = function() {
 /////////////////////////////////////////////////////////////////////
 window.onload = function() {
   refresh();
-  document.getElementById("delete").addEventListener("click", delete_photographer);
-  document.getElementById("add").addEventListener("click", add_photographer);
-  document.getElementById("update").addEventListener("click", update_photographer);
+  document.getElementById("delete").addEventListener("click", delete_album);
+  document.getElementById("add").addEventListener("click", add_album);
+  document.getElementById("update").addEventListener("click", update_album);
   document.getElementById("photo_list").addEventListener("click", photo_list);
 }
 //////////////////////////////////////////////////////////////////////

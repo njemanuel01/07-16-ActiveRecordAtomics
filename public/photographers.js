@@ -132,7 +132,7 @@ var add_photographer = function() {
 var update_photographer = function() {
   var req = new XMLHttpRequest();
   var name = document.getElementById("update_photographer_name").value;
-  var id = document.getElementById("delete_id").value.charAt(0);
+  var id = document.getElementById("update_id").value.charAt(0);
 
   var string = "/photographers/update?name=" + name + "&id=" +id;
   req.open("get", string);
