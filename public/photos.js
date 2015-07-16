@@ -3,16 +3,16 @@
 function refresh() {
 var req = new XMLHttpRequest();
 
-req.open("get", "/albums/all");
+req.open("get", "/photos/all");
 
-req.addEventListener("load", list_albums);
+req.addEventListener("load", list_photos);
 
 req.responseType = "json";
 req.send();
 }
 
-function list_albums() {
-  var ul = document.getElementById("all_albums");
+function list_photos() {
+  var ul = document.getElementById("all_photos");
   reset_ul(ul);
   var select_delete = document.getElementById("delete_id");
   var select_update = document.getElementById("update_id");
@@ -21,20 +21,20 @@ function list_albums() {
   reset_select(select_update);
   reset_select(select_photo);
   for (var i = 0; i < this.response.length; i++) {
-    add_album_to_list(ul, this.response[i].id, this.response[i].name);
-    add_album_to_select(select_delete, this.response[i].id, this.response[i].name);
-    add_album_to_select(select_update, this.response[i].id, this.response[i].name);
-    add_album_to_select(select_photo, this.response[i].id, this.response[i].name);
+    add_photo_to_list(ul, this.response[i].id, this.response[i].name);
+    add_photo_to_select(select_delete, this.response[i].id, this.response[i].name);
+    add_photo_to_select(select_update, this.response[i].id, this.response[i].name);
+    add_photo_to_select(select_photo, this.response[i].id, this.response[i].name);
   }
 }
 
-function add_album_to_list(ul, id, name) {
+function add_photo_to_list(ul, id, name) {
   var li = document.createElement("li");
   li.innerHTML = id + " - " + name;
   ul.appendChild(li);
 }
 
-function add_album_to_select(select, id, name) {
+function add_photo_to_select(select, id, name) {
   var option = document.createElement("option");
   option.innerHTML = id + "-" + name;
   select.appendChild(option);
@@ -52,41 +52,13 @@ function reset_ul(ul) {
   }
 }
 
-
-//Display photos for a selected photographer
-////////////////////////////////////////////////////////////////////////////////
-var photo_list = function() {
-  var req = new XMLHttpRequest();
-  var id = document.getElementById("photo_id").value.charAt(0);
-
-  req.open("get", "/albums/" + id + "/photos");
-
-  req.addEventListener("load", function() {
-    var ul = document.getElementById("photo_ul");
-    reset_ul(ul);
-    for (var i = 0; i < req.response.length; i++) {
-      var li = document.createElement("li");
-      var a = document.createElement("a");
-      a.setAttribute("href", req.response[i].url);
-      a.innerHTML = req.response[i].name;
-      li.appendChild(a);
-      ul.appendChild(li);
-    }
-  })
-
-  req.responseType = "json";
-  req.send();
-}
-
-
-
 //Deletes a photographer
 //////////////////////////////////////////////////////////////////////////
-var delete_album = function() {
+var delete_photo = function() {
   var req = new XMLHttpRequest();
   var id = document.getElementById("delete_id").value.charAt(0);
 
-  req.open("get", "/albums/delete/" + id);
+  req.open("get", "/photos/delete/" + id);
 
   req.addEventListener("load", function() {
     document.getElementById("delete_text").innerHTML = (req.response.name + " DELETED");
@@ -100,27 +72,29 @@ var delete_album = function() {
 
 //Adds a project
 ////////////////////////////////////////////////////////////////////////
-var add_album = function() {
+var add_photo = function() {
   var req = new XMLHttpRequest();
-  var name = document.getElementById("album_name").value;
+  var name = document.getElementById("photo_name").value;
+  var url = document.getElementById("photo_url").value;
 
-  var string = "/albums/add?name=" + name;
+  var string = "/photos/add?name=" + name + "&url=" + url;
   req.open("get", string);
 
   req.addEventListener("load", function() {
     document.getElementById("added_text").innerHTML = (req.response.name + " ADDED");
     
-    var ul = document.getElementById("all_albums");
-    add_album_to_list(ul, req.response.id, req.response.name);
+    var ul = document.getElementById("all_photos");
+    add_photo_to_list(ul, req.response.id, req.response.name);
     
     var select_delete = document.getElementById("delete_id");
     var select_update = document.getElementById("update_id");
     var select_photo = document.getElementById("photo_id");
-    add_album_to_select(select_delete, req.response.id, req.response.name);
-    add_album_to_select(select_update, req.response.id, req.response.name);
-    add_album_to_select(select_photo, req.response.id, req.response.name);
+    add_photo_to_select(select_delete, req.response.id, req.response.name);
+    add_photo_to_select(select_update, req.response.id, req.response.name);
+    add_photo_to_select(select_photo, req.response.id, req.response.name);
     
-    document.getElementById("album_name").value = "";
+    document.getElementById("photo_name").value = "";
+    document.getElementById("photo_url").value = "";
   })
 
   req.responseType = "json";
@@ -129,18 +103,20 @@ var add_album = function() {
 
 //Updates a photographers name
 ////////////////////////////////////////////////////////////////////////
-var update_album = function() {
+var update_photo = function() {
   var req = new XMLHttpRequest();
-  var name = document.getElementById("update_album_name").value;
+  var name = document.getElementById("update_photo_name").value;
+  var name = document.getElementById("update_photo_url").value;
   var id = document.getElementById("update_id").value.charAt(0);
 
-  var string = "/albums/update?name=" + name + "&id=" +id;
+  var string = "/photos/update?name=" + name + "&id=" + id + "&url=" + url;
   req.open("get", string);
 
   req.addEventListener("load", function() {
     document.getElementById("update_text").innerHTML = (req.response.name + " UPDATED");
     refresh();
-    document.getElementById("update_album_name").value = "";
+    document.getElementById("update_photo_name").value = "";
+    document.getElementById("update_photo_url").value = "";
   })
 
   req.responseType = "json";
@@ -151,9 +127,8 @@ var update_album = function() {
 /////////////////////////////////////////////////////////////////////
 window.onload = function() {
   refresh();
-  document.getElementById("delete").addEventListener("click", delete_album);
-  document.getElementById("add").addEventListener("click", add_album);
-  document.getElementById("update").addEventListener("click", update_album);
-  document.getElementById("photo_list").addEventListener("click", photo_list);
+  document.getElementById("delete").addEventListener("click", delete_photo);
+  document.getElementById("add").addEventListener("click", add_photo);
+  document.getElementById("update").addEventListener("click", update_photo);
 }
 //////////////////////////////////////////////////////////////////////

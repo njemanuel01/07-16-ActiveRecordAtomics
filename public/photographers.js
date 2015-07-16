@@ -140,7 +140,7 @@ var update_photographer = function() {
   req.addEventListener("load", function() {
     document.getElementById("update_text").innerHTML = (req.response.name + " UPDATED");
     refresh();
-    document.getElementById("photographer_name").value = "";
+    document.getElementById("update_photographer_name").value = "";
   })
 
   req.responseType = "json";
