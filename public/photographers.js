@@ -52,33 +52,32 @@ function reset_ul(ul) {
   }
 }
 
-//
-// //Display all links in the database
-// ////////////////////////////////////////////////////////////////////////////////
-// var all_links = function() {
-//   var req = new XMLHttpRequest();
-//   var names = [];
-//
-//   req.open("get", "http://localhost:4567/links");
-//
-//   req.addEventListener("load", function() {
-//     var ul = document.getElementById("links_all");
-//     for (var i = 0; i < req.response.length; i++) {
-//       var li = document.createElement("li");
-//       var a = document.createElement("a");
-//       a.setAttribute("href", req.response[i].link);
-//       a.appendChild(document.createTextNode(req.response[i].link));
-//       li.appendChild(a);
-//       ul.appendChild(li);
-//     }
-//   })
-//
-//   req.responseType = "json";
-//   req.send();
-// }
-// //////////////////////////////////////////////////////////////////////////
-//
-//
+
+//Display photos for a selected photographer
+////////////////////////////////////////////////////////////////////////////////
+var photo_list = function() {
+  var req = new XMLHttpRequest();
+  var id = document.getElementById("photo_id").value.charAt(0);
+
+  req.open("get", "/photographers/" + id + "/photos");
+
+  req.addEventListener("load", function() {
+    var ul = document.getElementById("photo_ul");
+    reset_ul(ul);
+    for (var i = 0; i < req.response.length; i++) {
+      var li = document.createElement("li");
+      var a = document.createElement("a");
+      a.setAttribute("href", req.response[i].url);
+      a.innerHTML = req.response[i].name;
+      li.appendChild(a);
+      ul.appendChild(li);
+    }
+  })
+
+  req.responseType = "json";
+  req.send();
+}
+
 
 
 //Deletes a photographer
@@ -155,5 +154,6 @@ window.onload = function() {
   document.getElementById("delete").addEventListener("click", delete_photographer);
   document.getElementById("add").addEventListener("click", add_photographer);
   document.getElementById("update").addEventListener("click", update_photographer);
+  document.getElementById("photo_list").addEventListener("click", photo_list);
 }
 //////////////////////////////////////////////////////////////////////

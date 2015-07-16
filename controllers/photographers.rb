@@ -27,5 +27,7 @@ get "/photographers/update" do
 end
 
 get "/photographers/:id/photos" do
-  json
+  photographer = Photographer.find(params["id"])
+  photos = photographer.photos
+  json photos
 end
