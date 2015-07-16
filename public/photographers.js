@@ -1,5 +1,6 @@
 //Adds list of projects at page load
 /////////////////////////////////////////////////////////////////////////////////
+function refresh() {
 var req = new XMLHttpRequest();
 
 req.open("get", "/photographers/all");
@@ -8,6 +9,7 @@ req.addEventListener("load", list_photographers);
 
 req.responseType = "json";
 req.send();
+}
 
 function list_photographers() {
   var ul = document.getElementById("all_photographers");
@@ -18,11 +20,11 @@ function list_photographers() {
   reset_select(select_delete);
   reset_select(select_update);
   reset_select(select_photo);
-  for (var i = 0; i < req.response.length; i++) {
-    add_photographer_to_list(ul, req.response[i].id, req.response[i].name);
-    add_photographer_to_select(select_delete, req.response[i].id, req.response[i].name);
-    add_photographer_to_select(select_update, req.response[i].id, req.response[i].name);
-    add_photographer_to_select(select_photo, req.response[i].id, req.response[i].name);
+  for (var i = 0; i < this.response.length; i++) {
+    add_photographer_to_list(ul, this.response[i].id, this.response[i].name);
+    add_photographer_to_select(select_delete, this.response[i].id, this.response[i].name);
+    add_photographer_to_select(select_update, this.response[i].id, this.response[i].name);
+    add_photographer_to_select(select_photo, this.response[i].id, this.response[i].name);
   }
 }
 
@@ -89,10 +91,9 @@ var delete_photographer = function() {
 
   req.addEventListener("load", function() {
     document.getElementById("delete_text").innerHTML = (req.response.name + " DELETED");
+    refresh();
   })
-
-  list_photographers();
-
+  
   req.responseType = "json";
   req.send();
 
@@ -109,8 +110,17 @@ var add_photographer = function() {
 
   req.addEventListener("load", function() {
     document.getElementById("added_text").innerHTML = (req.response.name + " ADDED");
-    add_list_item_to_projects(req.response.id, req.response.name);
-    add_item_to_select(req.response.id, req.response.name);
+    
+    var ul = document.getElementById("all_photographers");
+    add_photographer_to_list(ul, req.response.id, req.response.name);
+    
+    var select_delete = document.getElementById("delete_id");
+    var select_update = document.getElementById("update_id");
+    var select_photo = document.getElementById("photo_id");
+    add_photographer_to_select(select_delete, req.response.id, req.response.name);
+    add_photographer_to_select(select_update, req.response.id, req.response.name);
+    add_photographer_to_select(select_photo, req.response.id, req.response.name);
+    
     document.getElementById("photographer_name").value = "";
   })
 
@@ -129,8 +139,8 @@ var update_photographer = function() {
   req.open("get", string);
 
   req.addEventListener("load", function() {
-    document.getElementById("update_text").innerHTML = (req.response.name + " ADDED");
-    list_photographers();
+    document.getElementById("update_text").innerHTML = (req.response.name + " UPDATED");
+    refresh();
     document.getElementById("photographer_name").value = "";
   })
 
@@ -141,6 +151,7 @@ var update_photographer = function() {
 //Sets event actions
 /////////////////////////////////////////////////////////////////////
 window.onload = function() {
+  refresh();
   document.getElementById("delete").addEventListener("click", delete_photographer);
   document.getElementById("add").addEventListener("click", add_photographer);
   document.getElementById("update").addEventListener("click", update_photographer);
