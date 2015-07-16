@@ -35,3 +35,5 @@ unless ActiveRecord::Base.connection.table_exists?(:albums_photos)
     t.integer :photo_id
   end  
 end
+
+binding.pry
