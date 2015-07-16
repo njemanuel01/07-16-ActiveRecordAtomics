@@ -44,11 +44,7 @@ body {
   cursor: pointer;
 }
 
-.item {
-  border-bottom: 2px solid;
-}
-
-.item img {
+.columns img {
   width: 30%;
   display: block;
   margin-left: auto;
@@ -56,14 +52,19 @@ body {
   margin-bottom: 20px;
 }
 
-.item h3 {
+.columns h3 {
   text-align: center;
   padding: 10px;
+}
+
+.columns ul {
+  list-style-type: none;
 }
 
 .columns {
   background: #999966;
   padding-bottom: 20px;
+  text-align: center;
 }
 
 @media (min-width: 450px) {
@@ -84,12 +85,20 @@ body {
     overflow: auto; 
   }
   
+  .columns img {
+    width: 60%;
+  }
+  
   .sidebar button {
     margin: 10px;
   }
 }
 
 @media (min-width: 750px) {
+  
+  .columns img {
+    width: 80%;
+  }
   #column1 {
     float: left;
     width: 33%;

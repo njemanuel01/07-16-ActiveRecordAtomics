@@ -19,7 +19,9 @@ function list_photos() {
   reset_select(select_delete);
   reset_select(select_update);
   for (var i = 0; i < this.response.length; i++) {
-    add_photo_to_list(ul, this.response[i].id, this.response[i].name);
+    var column = document.getElementById("column" + ((i % 3) + 1))
+    add_photo_div_to_column(column, this.response[i].name, this.response[i].url)
+    // add_photo_to_list(ul, this.response[i].id, this.response[i].name);
     add_photo_to_select(select_delete, this.response[i].id, this.response[i].name);
     add_photo_to_select(select_update, this.response[i].id, this.response[i].name);
   }
@@ -35,6 +37,18 @@ function add_photo_to_select(select, id, name) {
   var option = document.createElement("option");
   option.innerHTML = id + "-" + name;
   select.appendChild(option);
+}
+
+function add_photo_div_to_column(column, name, url) {
+  var div = document.createElement("div");
+  var h3 = document.createElement("h3");
+  var img = document.createElement("img");
+  h3.innerHTML = name
+  img.src = url;
+  img.alt = "No Image Available";
+  div.appendChild(h3);
+  div.appendChild(img);
+  column.appendChild(div);
 }
 
 function reset_select(select) {

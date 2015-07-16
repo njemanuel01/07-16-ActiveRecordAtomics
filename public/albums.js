@@ -62,15 +62,9 @@ var photo_list = function() {
   req.open("get", "/albums/" + id + "/photos");
 
   req.addEventListener("load", function() {
-    var ul = document.getElementById("photo_ul");
-    reset_ul(ul);
+    var column = document.getElementById("column2");
     for (var i = 0; i < req.response.length; i++) {
-      var li = document.createElement("li");
-      var a = document.createElement("a");
-      a.setAttribute("href", req.response[i].url);
-      a.innerHTML = req.response[i].name;
-      li.appendChild(a);
-      ul.appendChild(li);
+      add_photo_div_to_column(column, req.response[i].name, req.response[i].url)
     }
   })
 
@@ -78,7 +72,23 @@ var photo_list = function() {
   req.send();
 }
 
+function add_photo_div_to_column(column, name, url) {
+  var div = document.createElement("div");
+  var h3 = document.createElement("h3");
+  var img = document.createElement("img");
+  h3.innerHTML = name
+  img.src = url;
+  img.alt = "No Image Available";
+  div.appendChild(h3);
+  div.appendChild(img);
+  column.appendChild(div);
+}
 
+function reset_column(column) {
+  while (column.firstChild) {
+      column.removeChild(column.firstChild);
+  }
+}
 
 //Deletes a photographer
 //////////////////////////////////////////////////////////////////////////
