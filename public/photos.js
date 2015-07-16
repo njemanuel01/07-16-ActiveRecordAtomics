@@ -1,14 +1,14 @@
 //Adds list of projects at page load
 /////////////////////////////////////////////////////////////////////////////////
 function refresh() {
-var req = new XMLHttpRequest();
+  var req = new XMLHttpRequest();
 
-req.open("get", "/photos/all");
+  req.open("get", "/photos/all");
 
-req.addEventListener("load", list_photos);
+  req.addEventListener("load", list_photos);
 
-req.responseType = "json";
-req.send();
+  req.responseType = "json";
+  req.send();
 }
 
 function list_photos() {
@@ -16,15 +16,12 @@ function list_photos() {
   reset_ul(ul);
   var select_delete = document.getElementById("delete_id");
   var select_update = document.getElementById("update_id");
-  var select_photo = document.getElementById("photo_id");
   reset_select(select_delete);
   reset_select(select_update);
-  reset_select(select_photo);
   for (var i = 0; i < this.response.length; i++) {
     add_photo_to_list(ul, this.response[i].id, this.response[i].name);
     add_photo_to_select(select_delete, this.response[i].id, this.response[i].name);
     add_photo_to_select(select_update, this.response[i].id, this.response[i].name);
-    add_photo_to_select(select_photo, this.response[i].id, this.response[i].name);
   }
 }
 
@@ -76,8 +73,9 @@ var add_photo = function() {
   var req = new XMLHttpRequest();
   var name = document.getElementById("photo_name").value;
   var url = document.getElementById("photo_url").value;
+  var photographer_id = document.getElementById("photographer_id").value;
 
-  var string = "/photos/add?name=" + name + "&url=" + url;
+  var string = "/photos/add?name=" + name + "&url=" + url +"&photographer_id=" + photographer_id;
   req.open("get", string);
 
   req.addEventListener("load", function() {
@@ -88,13 +86,12 @@ var add_photo = function() {
     
     var select_delete = document.getElementById("delete_id");
     var select_update = document.getElementById("update_id");
-    var select_photo = document.getElementById("photo_id");
     add_photo_to_select(select_delete, req.response.id, req.response.name);
     add_photo_to_select(select_update, req.response.id, req.response.name);
-    add_photo_to_select(select_photo, req.response.id, req.response.name);
     
     document.getElementById("photo_name").value = "";
     document.getElementById("photo_url").value = "";
+    document.getElementById("photographer_id").value = "";
   })
 
   req.responseType = "json";
@@ -106,10 +103,11 @@ var add_photo = function() {
 var update_photo = function() {
   var req = new XMLHttpRequest();
   var name = document.getElementById("update_photo_name").value;
-  var name = document.getElementById("update_photo_url").value;
-  var id = document.getElementById("update_id").value.charAt(0);
+  var url = document.getElementById("update_photo_url").value;
+  var photographer_id = document.getElementById("update_photographer_id").value;
+  var id = document.getElementById("update_id").value;
 
-  var string = "/photos/update?name=" + name + "&id=" + id + "&url=" + url;
+  var string = "/photos/update?name=" + name + "&id=" + id + "&url=" + url + "&photographer_id=" + photographer_id;
   req.open("get", string);
 
   req.addEventListener("load", function() {
@@ -117,6 +115,7 @@ var update_photo = function() {
     refresh();
     document.getElementById("update_photo_name").value = "";
     document.getElementById("update_photo_url").value = "";
+    document.getElementById("update_photographer_id").value = "";
   })
 
   req.responseType = "json";

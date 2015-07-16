@@ -9,9 +9,10 @@ get "/photos/all" do
 end  
 
 get "/photos/add" do
-  photo = Photo.new({"name" => params["name"], "url" => params["url"]})
+  photo = Photo.new({"name" => params["name"], "url" => params["url"], "photographer_id" => params["photographer_id"]})
+  binding.pry
   photo.save
-  json photographer
+  json photo
 end
 
 get "/photos/delete/:id" do
@@ -28,5 +29,9 @@ get "/photos/update" do
   if params["url"] != ""
     photo.update_attribute("url", params["url"])
   end
+  if params["photographer_id"] != ""
+    photo.update_attribute("photographer_id", params["photographer_id"])
+  end
+    
   json photo
 end
