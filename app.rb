@@ -1,3 +1,6 @@
+require "rubygems"
+require "bunder/setup"
+
 require "pry"
 require "active_record"
 require "sinatra"
