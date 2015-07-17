@@ -152,7 +152,6 @@ function photo_to_album(){
 
   req.addEventListener("load", function() {
     document.getElementById("album_text").innerHTML = (req.response.name + " added to album");
-    refresh();
     document.getElementById("album_to_photo_id").value = "";
   })
 
