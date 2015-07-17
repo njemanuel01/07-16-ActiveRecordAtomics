@@ -31,3 +31,11 @@ get "/albums/:id/photos" do
   photos = album.photos
   json photos
 end
+
+get "/albums/photoalbum" do
+  album = Album.find(params["album_id"])
+  photo = Photo.find(params["photo_id"])
+  album.photos<<(photo)
+  
+  json photo
+end

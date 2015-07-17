@@ -16,14 +16,17 @@ function list_photos() {
   reset_ul(ul);
   var select_delete = document.getElementById("delete_id");
   var select_update = document.getElementById("update_id");
+  var select_album = document.getElementById("photo_to_album_id");
   reset_select(select_delete);
   reset_select(select_update);
+  reset_select(select_album);
   for (var i = 0; i < this.response.length; i++) {
     var column = document.getElementById("column" + ((i % 3) + 1))
     add_photo_div_to_column(column, this.response[i].name, this.response[i].url)
     // add_photo_to_list(ul, this.response[i].id, this.response[i].name);
     add_photo_to_select(select_delete, this.response[i].id, this.response[i].name);
     add_photo_to_select(select_update, this.response[i].id, this.response[i].name);
+    add_photo_to_select(select_album, this.response[i].id, this.response[i].name);
   }
 }
 
@@ -100,8 +103,10 @@ var add_photo = function() {
     
     var select_delete = document.getElementById("delete_id");
     var select_update = document.getElementById("update_id");
+    var select_album = document.getElementById("photo_to_album_id");
     add_photo_to_select(select_delete, req.response.id, req.response.name);
     add_photo_to_select(select_update, req.response.id, req.response.name);
+    add_photo_to_select(select_album, req.response.id, req.response.name);
     
     document.getElementById("photo_name").value = "";
     document.getElementById("photo_url").value = "";
@@ -135,6 +140,25 @@ var update_photo = function() {
   req.responseType = "json";
   req.send();
 }
+
+//Adds a photo to an album
+function photo_to_album(){
+  var req = new XMLHttpRequest();
+  var photo_id = document.getElementById("photo_to_album_id").value.charAt(0);
+  var album_id = document.getElementById("album_to_photo_id").value;
+
+  var string = "/photos/photoalbum?photo_id=" + photo_id + "&album_id=" + album_id;
+  req.open("get", string);
+
+  req.addEventListener("load", function() {
+    document.getElementById("album_text").innerHTML = (req.response.name + " added to album");
+    refresh();
+    document.getElementById("album_to_photo_id").value = "";
+  })
+
+  req.responseType = "json";
+  req.send();
+}
 //
 //Sets event actions
 /////////////////////////////////////////////////////////////////////
@@ -143,5 +167,6 @@ window.onload = function() {
   document.getElementById("delete").addEventListener("click", delete_photo);
   document.getElementById("add").addEventListener("click", add_photo);
   document.getElementById("update").addEventListener("click", update_photo);
+  document.getElementById("photo_to_album").addEventListener("click", photo_to_album);
 }
 //////////////////////////////////////////////////////////////////////

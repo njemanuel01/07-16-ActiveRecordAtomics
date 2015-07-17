@@ -35,3 +35,11 @@ get "/photos/update" do
     
   json photo
 end
+
+get "/photos/photoalbum" do
+  album = Album.find(params["album_id"])
+  photo = Photo.find(params["photo_id"])
+  album.photos<<(photo)
+  
+  json photo
+end
