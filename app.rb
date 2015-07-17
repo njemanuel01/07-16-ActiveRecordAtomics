@@ -1,5 +1,5 @@
 require "rubygems"
-require "bunder/setup"
+require "bundler/setup"
 
 require "pry"
 require "active_record"
