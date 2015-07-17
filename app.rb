@@ -6,13 +6,14 @@ require "active_record"
 require "sinatra"
 require "sinatra/reloader"
 require "sinatra/json"
-require "sqlite3"
 
 configure :development do
+  require "sqlite3"
   ActiveRecord::Base.establish_connection(adapter: "sqlite3", database: "photo_storage.db")
 end
 
-configure :production do  
+configure :production do
+  require "pg"  
   db = URI.parse(ENV['DATABASE_URL'])
 
   ActiveRecord::Base.establish_connection(
