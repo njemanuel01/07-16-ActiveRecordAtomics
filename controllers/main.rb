@@ -1,3 +1,3 @@
-get "/home" do
+get "/" do
   erb :"main/home"
 end
